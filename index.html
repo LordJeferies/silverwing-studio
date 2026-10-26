@@ -236,4 +236,52 @@ function toggleParticles(){document.body.classList.toggle('particles-off');docum
  function hide(){layer.classList.remove('open');layer.setAttribute('aria-hidden','true');lastFocus?.focus?.();}
  open.addEventListener('click',show);close.addEventListener('click',hide);layer.addEventListener('click',e=>{if(e.target===layer)hide();});tabs.forEach(t=>t.addEventListener('click',()=>render(t.dataset.guide)));document.addEventListener('keydown',e=>{if(!layer.classList.contains('open'))return;if(e.key==='Escape')hide();if(e.key==='Tab'){const focus=[...layer.querySelectorAll('button:not([disabled])')];if(!focus.length)return;const first=focus[0],last=focus[focus.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
 })();
+</script><style id="sw-publishing-beta">
+#sw-pub-open{position:fixed;bottom:80px;right:22px;z-index:199;background:#f5f9ff;color:#163b73;border:1px solid #adc6ed;border-radius:40px;padding:12px 18px;font-weight:700;box-shadow:0 12px 36px #1232583b}
+#sw-pub{display:none;position:fixed;inset:0;background:#091323bb;z-index:340;overflow:auto;padding:3vh 12px;backdrop-filter:blur(10px)}
+#sw-pub.open{display:block}
+#sw-pub-panel{max-width:1080px;margin:auto;padding:clamp(20px,4vw,44px);background:#f6f8fc;color:#1c2f4b;border-radius:28px;border:1px solid #dfebfb;box-shadow:0 20px 90px #060c1790}
+#sw-pub-panel h2{font-size:clamp(27px,4vw,45px);color:#203956;letter-spacing:-.055em}
+#sw-pub-panel p{color:#516780;line-height:1.65}
+#sw-pub-panel button{cursor:pointer}
+.sw-pub-close,.sw-pub-submit{border:0;background:#2155a7;color:#fff;border-radius:100px;padding:12px 19px}
+.sw-pub-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sw-pub-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.sw-pub-metric{padding:18px;background:#fff;border-radius:18px;border:1px solid #dbe5f4}
+.sw-pub-metric strong{font-size:28px;display:block;color:#1d467f}
+.sw-pub-metric span{font-size:12px;color:#64758c}
+.sw-pub-form{background:white;padding:24px;border-radius:20px;border:1px solid #dce6f2;display:grid;grid-template-columns:1.4fr 1fr auto;gap:12px;align-items:end}
+.sw-pub-form label{display:block;font-size:12px;font-weight:700;color:#425a79;margin-bottom:7px}
+.sw-pub-form input{width:100%;min-height:44px;padding:10px;border:1px solid #b9c9de;background:#fff;color:#182c47;border-radius:12px}
+.sw-pub-table{width:100%;border-collapse:collapse;margin-top:18px}
+.sw-pub-table td,.sw-pub-table th{padding:13px;border-bottom:1px solid #dae3f0;color:#213b5e;text-align:left}
+.sw-pub-table a{color:#215eb8;text-decoration:underline;overflow-wrap:anywhere}
+.sw-pub-help{font-size:12px;color:#5b6d82;background:#e7effb;border-radius:12px;padding:14px;margin-top:15px}
+@media(max-width:800px){.sw-pub-grid{grid-template-columns:repeat(2,1fr)}.sw-pub-form{grid-template-columns:1fr}.sw-pub-table{font-size:12px}#sw-pub-open{bottom:70px;right:8px;padding:9px 13px}}
+@media print{#sw-pub,#sw-pub-open{display:none!important}}
+</style>
+<button id="sw-pub-open" type="button">✦ Publicaciones & métricas</button>
+<div id="sw-pub" aria-hidden="true">
+ <section id="sw-pub-panel" role="dialog" aria-modal="true" aria-labelledby="sw-pub-title">
+  <div class="sw-pub-head"><span style="font-size:11px;letter-spacing:.15em;color:#4c6794">INNER CIRCLE · PROTOTIPO LOCAL BETA</span><button class="sw-pub-close" type="button" id="sw-pub-close">Cerrar ✕</button></div>
+  <h2 id="sw-pub-title">Publicar es parte del progreso.</h2>
+  <p>Registra el enlace de una publicación, observa el historial y prepara su seguimiento. Esta beta guarda los enlaces únicamente en este navegador. Para medir resultados reales necesitarás conectar cuentas autorizadas a las APIs de cada plataforma.</p>
+  <div class="sw-pub-grid">
+   <div class="sw-pub-metric"><strong id="sw-pub-count">0</strong><span>Enlaces registrados</span></div>
+   <div class="sw-pub-metric"><strong id="sw-pub-pts">0</strong><span>Puntos de demostración</span></div>
+   <div class="sw-pub-metric"><strong>—</strong><span>Alcance real no conectado</span></div>
+   <div class="sw-pub-metric"><strong>—</strong><span>Interacciones reales no conectadas</span></div>
+  </div>
+  <form id="sw-pub-form" class="sw-pub-form">
+   <div><label for="sw-pub-url">URL de la publicación</label><input required id="sw-pub-url" type="url" placeholder="https://www.instagram.com/p/..." maxlength="750"/></div>
+   <div><label for="sw-pub-name">Pieza o campaña</label><input id="sw-pub-name" type="text" maxlength="80" placeholder="Reel entrevista #01"/></div>
+   <button class="sw-pub-submit" type="submit">Registrar enlace</button>
+  </form>
+  <p id="sw-pub-feedback" role="status"></p>
+  <div style="overflow:auto"><table class="sw-pub-table"><thead><tr><th>Fecha</th><th>Publicación</th><th>Plataforma</th><th>Estado</th><th></th></tr></thead><tbody id="sw-pub-records"></tbody></table></div>
+  <div class="sw-pub-help"><strong>Cómo funcionarán las métricas:</strong> las APIs de Meta, TikTok y LinkedIn requieren autorización y permisos específicos. Un enlace público no garantiza acceso a vistas, impresiones, guardados, clics ni engagement. Las recompensas definitivas se acreditarán en un servidor después de verificar la publicación; los puntos de esta beta son ilustrativos y no canjeables.</div>
+ </section>
+</div>
+<script id="sw-publishing-beta">
+(()=>{'use strict';const $=id=>document.getElementById(id),key='sw-inner-circle-beta-posts-v1',open=$('sw-pub-open'),layer=$('sw-pub'),close=$('sw-pub-close');let prev;const platforms=['instagram.com','tiktok.com','linkedin.com','youtube.com','youtu.be','facebook.com','x.com','twitter.com'];const get=()=>{try{return JSON.parse(localStorage.getItem(key)||'[]')}catch{return []}};const save=a=>localStorage.setItem(key,JSON.stringify(a));const format=d=>new Date(d).toLocaleDateString('es',{day:'2-digit',month:'short',year:'numeric'});function render(){let a=get();$('sw-pub-count').textContent=a.length;$('sw-pub-pts').textContent=a.length*10;$('sw-pub-records').replaceChildren();for(const [i,item]of a.entries()){let tr=document.createElement('tr'),values=[format(item.date),item.name||'Contenido',item.platform,'Pendiente de verificación'];values.forEach(v=>{let td=document.createElement('td');td.textContent=v;tr.append(td)});let td=document.createElement('td');let link=document.createElement('a');link.href=item.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Ver enlace';td.append(link);let remove=document.createElement('button');remove.type='button';remove.textContent='Eliminar';remove.style.cssText='display:block;margin-top:8px;border:0;background:transparent;color:#8c3840;text-decoration:underline';remove.addEventListener('click',()=>{let list=get();save(list.filter(x=>x.id!==item.id));render()});td.append(remove);tr.append(td);$('sw-pub-records').append(tr)}}function hide(){layer.classList.remove('open');layer.setAttribute('aria-hidden','true');prev?.focus?.()}open.addEventListener('click',()=>{prev=document.activeElement;render();layer.classList.add('open');layer.setAttribute('aria-hidden','false');close.focus()});close.addEventListener('click',hide);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('open'))return;if(e.key==='Escape')hide();if(e.key==='Tab'){const all=[...layer.querySelectorAll('button,a,input')].filter(x=>!x.disabled),first=all[0],last=all[all.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});$('sw-pub-form').addEventListener('submit',e=>{e.preventDefault();const feedback=$('sw-pub-feedback');try{const input=$('sw-pub-url').value.trim(),url=new URL(input);if(url.protocol!=='https:'||!platforms.some(p=>url.hostname===p||url.hostname.endsWith('.'+p)))throw Error('Usa un enlace HTTPS de una red compatible.');const normalized=url.origin+url.pathname.replace(/\/$/,'');let records=get();if(records.some(r=>r.normalized===normalized))throw Error('Este enlace ya fue registrado.');records.push({id:Date.now()+'-'+Math.random().toString(36).slice(2),url:input,normalized,name:$('sw-pub-name').value.trim(),date:new Date().toISOString(),platform:url.hostname});save(records);$('sw-pub-form').reset();feedback.textContent='Enlace registrado localmente. Pendiente de verificación: no se han consultado estadísticas reales.';render()}catch(error){feedback.textContent=error.message}});render()})();
 </script></body></html>
