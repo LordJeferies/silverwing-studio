@@ -167,4 +167,73 @@ const hash=location.hash.slice(1);if($(hash)?.classList.contains('internal'))go(
 function sceneSelect(index){const hero=document.querySelector('.cinema-hero');if(!hero)return;const sources=['assets/landscape.jpg','assets/silverwing-hero.jpg','assets/landscape.jpg'];hero.querySelector('.scene-bg').src=sources[index];hero.classList.toggle('sculpture',index===1);hero.querySelector('.scene-bg').style.objectPosition=index===2?'center 80%':'center';hero.querySelectorAll('[data-scene]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.scene===index)));const texts=[['From expertise to everywhere','Your expertise. Everywhere.'],['Crafted with intention','Ideas into impact. At scale.'],['A studio around your time','Create more. Delegate better.']];hero.querySelector('.cinema-copy .eyebrow').textContent=texts[index][0];hero.querySelector('h1').textContent=texts[index][1];hero.querySelector('.scene-bg').onload=()=>glassInstance?.markChanged();glassInstance?.markChanged()}
 function toggleParticles(){document.body.classList.toggle('particles-off');document.querySelectorAll('[data-particles]').forEach(b=>b.setAttribute('aria-pressed',String(!document.body.classList.contains('particles-off'))))}
 (function(){const layer=document.createElement('div');layer.className='particle-field';layer.setAttribute('aria-hidden','true');layer.innerHTML=Array.from({length:24},(_,i)=>`<i style="--x:${(i*47)%100}%;--y:${(i*31)%100}%;--t:${12+i%9}s"></i>`).join('');document.body.prepend(layer);const bg=document.createElement('div');bg.className='ambient-texture';bg.setAttribute('aria-hidden','true');document.body.prepend(bg)})();
-</script><script type="module" src="glass-module.js"></script><script>window.addEventListener('load',()=>requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo(0,0))),{once:true});</script></body></html>
+</script><script type="module" src="glass-module.js"></script><script>window.addEventListener('load',()=>requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo(0,0))),{once:true});</script><style id="sw-guided-studio-style">
+#sw-guide-open{position:fixed;right:22px;bottom:24px;z-index:200;background:#163b7a;color:#fff;border:1px solid #afc8f8;border-radius:999px;padding:13px 20px;box-shadow:0 14px 36px #15315a40;font-weight:700}
+#sw-guide{position:fixed;inset:0;z-index:300;background:#101827b9;display:none;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(12px)}
+#sw-guide.open{display:flex}
+#sw-guide-panel{width:min(100%,1060px);max-height:min(88vh,930px);overflow:auto;background:#f7f9fd;color:#1c2940;border:1px solid #e2e8f3;border-radius:26px;box-shadow:0 25px 85px #0004;padding:clamp(20px,4vw,42px)}
+#sw-guide-panel h2{font-size:clamp(31px,4vw,51px);margin:10px 0;color:#152743;letter-spacing:-.055em}
+#sw-guide-panel p{color:#52637b;line-height:1.65}
+.sw-guide-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sw-guide-close{border:1px solid #ccd7e9;background:#fff;border-radius:99px;padding:10px 16px;color:#24446c}
+.sw-guide-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.19em;font-weight:750;color:#4669ad}
+.sw-guide-tabs{display:flex;flex-wrap:wrap;gap:9px;margin:24px 0}
+.sw-guide-tabs button{border:1px solid #cbd8ea;border-radius:999px;background:#fff;color:#384a66;padding:10px 14px}
+.sw-guide-tabs button[aria-selected=true]{background:#1e4e9b;border-color:#1e4e9b;color:#fff}
+.sw-guide-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sw-guide-card{padding:23px;background:white;border:1px solid #dce5f1;border-radius:20px}
+.sw-guide-card h3{font-size:21px;color:#24344d;margin:0 0 12px}
+.sw-guide-card p{font-size:14px;margin:0 0 12px}
+.sw-guide-card strong{color:#283e61}
+.sw-guide-card .sw-guide-action{display:inline-block;margin-top:12px;padding:12px 18px;background:#1d57b0;color:white;border:0;border-radius:999px;font-size:13px}
+.sw-guide-card .sw-guide-action:focus-visible,#sw-guide button:focus-visible{outline:3px solid #e3a533;outline-offset:3px}
+.sw-guide-note{border-left:3px solid #668ad1;background:#eaf0fa;border-radius:8px;padding:13px 17px;margin-top:18px;font-size:13px;color:#324c76}
+@media(max-width:720px){.sw-guide-layout{grid-template-columns:1fr}#sw-guide-panel{max-height:95vh;padding:21px}#sw-guide-open{bottom:12px;right:12px;padding:11px 15px}}
+@media print{#sw-guide,#sw-guide-open{display:none!important}}
+</style><button id="sw-guide-open" type="button" aria-haspopup="dialog" aria-controls="sw-guide">✦ Guía para decidir</button>
+<div id="sw-guide" aria-hidden="true">
+ <div id="sw-guide-panel" role="dialog" aria-modal="true" aria-labelledby="sw-guide-title">
+  <div class="sw-guide-top"><span class="sw-guide-kicker">SILVERWING · BUSINESS STUDIO / BETA</span><button class="sw-guide-close" id="sw-guide-close" type="button">Cerrar ✕</button></div>
+  <h2 id="sw-guide-title">¿Qué necesitamos resolver hoy?</h2>
+  <p>En vez de recorrer todo el sistema, elige una tarea. Cada recorrido explica la decisión, su razonamiento y dónde ejecutarla.</p>
+  <div class="sw-guide-tabs" role="tablist" aria-label="Temas de trabajo">
+   <button type="button" role="tab" data-guide="offer">Qué vendemos</button>
+   <button type="button" role="tab" data-guide="client">Qué recomendar</button>
+   <button type="button" role="tab" data-guide="pricing">Cómo cobrar</button>
+   <button type="button" role="tab" data-guide="delivery">Cómo entregar</button>
+   <button type="button" role="tab" data-guide="sales">Cómo vender</button>
+   <button type="button" role="tab" data-guide="ideas">Qué desarrollar</button>
+  </div>
+  <div id="sw-guide-body" class="sw-guide-layout" aria-live="polite"></div>
+  <div class="sw-guide-note">Esta es una beta pública con ejemplos y supuestos comerciales. Los plazos, costos y márgenes deben validarse antes de utilizarlos como compromisos contractuales. Silverwing produce contenido; no incluye gestión de publicidad ni garantía de resultados de audiencia.</div>
+ </div>
+</div>
+<script id="sw-guided-studio-script">
+(()=>{'use strict';
+ const guides={
+ offer:[
+ {title:'La oferta en una frase',text:'Convertimos el conocimiento y los materiales del cliente en un flujo regular de piezas de contenido listas para publicar, mediante una operación editorial y de producción creativa repetible.',why:'La promesa no es hacer marketing por el cliente. Es eliminar la fricción de idear, transformar, editar y organizar contenido de calidad de forma constante.',action:'Ver catálogo',to:'services'},
+ {title:'La arquitectura de compra',text:'Primero se elige el volumen: 12 piezas por $399, 28 por $799 o 64 por $999, siempre por ciclos de cuatro semanas. Después se elige la fuente del contenido y, opcionalmente, un acabado especial para cuatro Reels.',why:'Separar volumen, obtención de materia prima y tratamiento visual permite explicar el precio y gestionar el alcance. Inner Circle está incluido en todos los planes.',action:'Configurar paquete',to:'builder'}],
+ client:[
+ {title:'Primero diagnosticar, luego recomendar',text:'Pregunta cuánto material tiene el cliente, si puede grabar, si necesita orientación editorial, con qué frecuencia quiere aparecer y cuánto tiempo puede dedicar. No recomiendes por profesión solamente.',why:'Un médico con poco tiempo y conocimiento especializado podría beneficiarse de entrevistas remotas; un abogado que ya graba videos quizá solo necesite producción. El objetivo es adaptar la fuente de contenido al tiempo disponible.',action:'Ver casos reales de uso',to:'scenarios'},
+ {title:'Ejemplo: especialista sin tiempo',text:'Daily Authority ($799) + We Interview, We Create ($1,000) + edición Clean incluida = $1,799 / cuatro semanas. Dos entrevistas remotas como máximo; el conocimiento y las afirmaciones sensibles deben ser validados por el profesional.',why:'Es un ejemplo de recomendación, no una propuesta definitiva. Se debe confirmar si dos entrevistas generan material suficiente para 28 piezas y si la capacidad editorial lo soporta.',action:'Personalizar propuesta',to:'builder'}],
+ pricing:[
+ {title:'Precio de venta no es margen',text:'Stay Present: $399 / 12 ≈ $33.25 por pieza. Daily Authority: $799 / 28 ≈ $28.54. Maximum Visibility: $999 / 64 ≈ $15.61. Todos los importes corresponden a cuatro semanas.',why:'La caída del ingreso por pieza en Maximum Visibility obliga a comprobar horas de edición, diseño, coordinación, revisiones, insumos y capacidad simultánea. Un plan barato en términos unitarios puede perder dinero aun vendiéndose bien.',action:'Analizar rentabilidad',to:'finance'},
+ {title:'Cómo construir una cotización',text:'Precio = plan base + modalidad de captura + acabado avanzado opcional. We Plan suma $500 hasta ocho guiones; Interview suma $1,000 hasta dos entrevistas; Dynamic suma $199 y Cinematic $399 sobre solo cuatro Reels seleccionados.',why:'No extiendas un acabado premium a todos los Reels sin presupuestarlo. Documenta inclusiones, exclusiones, revisiones, calendario, validaciones y supuestos antes de cerrar.',action:'Abrir Plan Builder',to:'builder'}],
+ delivery:[
+ {title:'Convertir una promesa en operación',text:'Días 1–2: ingreso, alcance y recepción de materiales. Días 3–4: planificación editorial. Días 5–8: primera producción y lote inicial. Días 9–28: producción y entrega por lotes, sujeto a insumos y aprobaciones.',why:'Este calendario es una hipótesis operativa, no un SLA garantizado. Cada atraso de materiales o revisión debe mover la programación de forma visible. Es preferible entregar por lotes controlados que prometer cambios ilimitados.',action:'Ver flujo de producción',to:'operations'},
+ {title:'Evitar el alcance infinito',text:'Establece qué cuenta como una pieza original, adaptación o revisión. Define una ronda consolidada por lote como punto de partida a acordar; documenta formatos, número de cortes, correcciones y permisos para material generado con IA.',why:'Sin criterios de aceptación, 28 piezas pueden convertirse en decenas de trabajos extra. En contenido médico o jurídico, la revisión factual corresponde al especialista, no al editor.',action:'Revisar servicios y límites',to:'services'}],
+ sales:[
+ {title:'Vender un sistema, no una lista de clips',text:'Abre con la situación del cliente: «¿Qué te impide crear contenido de forma constante?». Muestra después cómo Silverwing transforma una sesión, entrevista o biblioteca existente en activos recurrentes.',why:'Un negocio compra previsibilidad, ahorro de tiempo y una calidad consistente. Evita promesas de viralidad, leads garantizados o gestión integral de marketing si no están contratadas.',action:'Abrir Sales Playbook',to:'sales'},
+ {title:'Cerrar con claridad',text:'Presenta una recomendación principal, una alternativa más ligera, lo que debe aportar el cliente, el calendario orientativo, la inversión por cuatro semanas y lo que se excluye. Luego genera una propuesta específica.',why:'Demasiadas opciones frenan la compra. Haz explícito el valor de Inner Circle sin convertirlo en una compra independiente ni prometer beneficios no lanzados.',action:'Preparar propuesta',to:'builder'}],
+ ideas:[
+ {title:'Innovar sin dispersar la operación',text:'Podcast Studio, Podcast Launch Kit, Content Brain, paquetes visuales de IA, suscripciones white-label y servicios para miembros son líneas a experimentar; no todos son ofertas aprobadas.',why:'Antes de lanzar, exige: cliente objetivo, problema repetido, prueba de demanda, insumos, costo unitario, capacidad, precio y principal riesgo. Marca cada propuesta como hipótesis, piloto, activa o retirada.',action:'Abrir Innovation Lab',to:'innovation'},
+ {title:'Tomar decisiones trazables',text:'Por cada cambio registra qué supuesto se está probando, cuál es la señal de éxito, qué límite operativo afecta y cuándo revisar el resultado. Una decisión sin criterio de validación es solo una preferencia.',why:'Una operación escalable necesita aprender de la demanda real, no sumar servicios porque parecen atractivos. Mantén una única definición de planes, precios y alcance.',action:'Abrir Decision Journal',to:'journal'}]
+ };
+ const layer=document.getElementById('sw-guide'),body=document.getElementById('sw-guide-body'),open=document.getElementById('sw-guide-open'),close=document.getElementById('sw-guide-close'),tabs=[...layer.querySelectorAll('[data-guide]')];let lastFocus=null;
+ function render(key){tabs.forEach(t=>t.setAttribute('aria-selected',String(t.dataset.guide===key)));body.replaceChildren();for(const item of guides[key]){const card=document.createElement('article');card.className='sw-guide-card';const title=document.createElement('h3');title.textContent=item.title;const p=document.createElement('p');p.textContent=item.text;const why=document.createElement('p');const strong=document.createElement('strong');strong.textContent='Por qué importa: ';why.append(strong,document.createTextNode(item.why));const btn=document.createElement('button');btn.className='sw-guide-action';btn.type='button';btn.textContent=item.action;btn.addEventListener('click',()=>{hide();if(typeof window.setMode==='function')window.setMode('internal');if(typeof window.go==='function')window.go(item.to);});card.append(title,p,why,btn);body.append(card);}}
+ function show(){lastFocus=document.activeElement;layer.classList.add('open');layer.setAttribute('aria-hidden','false');render('offer');close.focus();}
+ function hide(){layer.classList.remove('open');layer.setAttribute('aria-hidden','true');lastFocus?.focus?.();}
+ open.addEventListener('click',show);close.addEventListener('click',hide);layer.addEventListener('click',e=>{if(e.target===layer)hide();});tabs.forEach(t=>t.addEventListener('click',()=>render(t.dataset.guide)));document.addEventListener('keydown',e=>{if(!layer.classList.contains('open'))return;if(e.key==='Escape')hide();if(e.key==='Tab'){const focus=[...layer.querySelectorAll('button:not([disabled])')];if(!focus.length)return;const first=focus[0],last=focus[focus.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
+})();
+</script></body></html>
